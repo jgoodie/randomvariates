@@ -14,7 +14,7 @@ class RandomVariates:
     Class method to generate random variates
     """
     def __init__(self):
-        self.seed = 0  # Fix this so that init is None, then fix things so that we can have a seed of 0
+        self.seed = None  # Previously set to 0, now set to None
         self.prn = 0
         self.seed0 = 2 ** 23 - 1
         self.m = 16807
@@ -94,7 +94,8 @@ class RandomVariates:
         Generate a random seed if initial seed value is 0 else
         :return: a seed value
         """
-        if self.seed == 0:
+        if self.seed is None:
+            self.seed = 0
             self.seed0 = self.randseed()
             seed = (self.m + self.seed0 + self.seed) % self.m31  # reversed m and m31, self.m * self.seed0
         else:
