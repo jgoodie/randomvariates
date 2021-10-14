@@ -95,9 +95,8 @@ class RandomVariates:
         :return: a seed value
         """
         if self.seed is None:
-            self.seed = 0
             self.seed0 = self.randseed()
-            seed = (self.m + self.seed0 + self.seed) % self.m31  # reversed m and m31, self.m * self.seed0
+            seed = (self.m + self.seed0) % self.m31  # reversed m and m31, self.m * self.seed0
         else:
             seed = ((self.m + self.seed0 + self.seed) % self.m31)**math.pi  # reversed m and m31, self.m * self.seed0
         return seed
@@ -131,8 +130,8 @@ class RandomVariates:
         :return: a list of random normals
         """
         u1 = self.uniform(n=n)
-        if self.seed != 0:
-            self.seed += 2**34 - 1  # Hack to make sure U1 and U2 are independent
+        if self.seed is not None:
+            self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
         u2 = self.uniform(n=n)
         theta = [2 * math.pi * u for u in u2]
         r = [math.sqrt(-2 * math.log(u)) for u in u1]
