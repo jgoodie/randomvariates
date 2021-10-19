@@ -5,7 +5,7 @@ Semester: Fall 2021
 Project Group: 40
 """
 
-import math
+import numpy as np
 from datetime import datetime
 
 
@@ -28,9 +28,9 @@ class RandomVariates:
         :param k:
         :return:
         """
-        n_fact = math.factorial(n)
-        k_fact = math.factorial(k)
-        nk_fact = math.factorial(n - k)
+        n_fact = np.math.factorial(n)
+        k_fact = np.math.factorial(k)
+        nk_fact = np.math.factorial(n - k)
         res = n_fact / (k_fact * nk_fact)
         return res
 
@@ -70,7 +70,6 @@ class RandomVariates:
         Get random number from square
         :return: smaller random number
         """
-        # int.from_bytes(os.urandom(7), sys.byteorder)
         i = int(datetime.now().timestamp() * 1000000)
         r = self.reverse(int(datetime.now().timestamp() * 1000000))
         self.prn = self.squaresrng(i, r) % 100000000000
@@ -91,14 +90,14 @@ class RandomVariates:
 
     def generateseed(self):
         """
-        Generate a random seed if initial seed value is 0 else
+        Generate a random seed if seed value is None. This helps with randomly generating values.
         :return: a seed value
         """
         if self.seed is None:
             self.seed0 = self.randseed()
             seed = (self.m + self.seed0) % self.m31  # reversed m and m31, self.m * self.seed0
         else:
-            seed = ((self.m + self.seed0 + self.seed) % self.m31)**math.pi  # reversed m and m31, self.m * self.seed0
+            seed = ((self.m + self.seed0 + self.seed) % self.m31)**np.pi  # reversed m and m31, self.m * self.seed0
         return seed
 
     def uniform(self, n=1, a=0, b=1):
@@ -109,17 +108,13 @@ class RandomVariates:
         :param b: ending point of uniform range
         :return: an array of uniform RVs
         """
-        # if self.seed == 0:
-        #     self.seed0 = self.randseed()
-        #     seed = (self.m31 * self.seed0 + self.seed) % self.m
-        # else:
-        #     seed = (self.m31 * self.seed0 + self.seed) % self.m
-        # unifs = [seed]  # type: list[int]
         unifs = [self.generateseed()]  # type: list[int]
         for i in range(1, n + 1):
             xi = (self.m * unifs[i - 1]) % self.m31
             unifs.append(xi)
-        return [(((x * (b - a)) / self.m31) + a) for x in unifs][1:]  # type: list[float]
+        # simple list append is faster than numpy.append()
+        # numpy.append() is shockingly slow. this is because it does a full copy?
+        return np.array([(((x * (b - a)) / self.m31) + a) for x in unifs][1:])
 
     def norm(self, mu=0, sd=1, n=1):
         """
@@ -129,22 +124,51 @@ class RandomVariates:
         :param n: number of random normals to generate
         :return: a list of random normals
         """
+        # u1 = self.uniform(n=n)
+        # if self.seed is not None:
+        #     self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
+        # u2 = self.uniform(n=n)
+        # theta = [2 * np.pi * u for u in u2]
+        # r = [np.sqrt(-2 * np.log(u)) for u in u1]
+        # # x1 = [xi[0] * np.cos(xi[1]) for xi in zip(r, theta)]
+        # # x2 = [xi[0] * np.sin(xi[1]) for xi in zip(r, theta)]
+        # x = [xi[0] * np.cos(xi[1]) for xi in zip(r, theta)]
+        # z = [mu + (xj * sd) for xj in x]
+        # return z
         u1 = self.uniform(n=n)
         if self.seed is not None:
             self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
         u2 = self.uniform(n=n)
-        theta = [2 * math.pi * u for u in u2]
-        r = [math.sqrt(-2 * math.log(u)) for u in u1]
-        # x1 = [xi[0] * math.cos(xi[1]) for xi in zip(r, theta)]
-        # x2 = [xi[0] * math.sin(xi[1]) for xi in zip(r, theta)]
-        x = [xi[0] * math.cos(xi[1]) for xi in zip(r, theta)]
-        z = [mu + (xj * sd) for xj in x]
+        theta = 2 * np.pi * u2
+        r = np.sqrt(-2 * np.log(u1))
+        x = r * np.cos(theta)
+        z = mu + (x * sd)
         return z
 
     def exponential(self, lam=1, n=1):
-        U = self.uniform(n=n)
-        exp = [-1 * (1 / lam) * math.log(u) for u in U]
-        # exp = [-1 * (1 / lam) * math.log(1-u) for u in U]
+        """
+        Generate Exponential Random Variates
+        :param lam: lamba or rate
+        :param n: the number of random variates to generate
+        :return: a list of random exponentials
+        """
+        if lam == 0 or lam == 0.0:
+            return [0.0]*n
+        u1 = self.uniform(n=n)
+        # exp = [-1 * (1 / lam) * np.log(u) for u in u1]
+        exp = [-1 * (1 / lam) * np.log(1-u) for u in u1]
         return exp
 
-    # Erlang: https://en.wikipedia.org/wiki/Erlang_distribution#Generating_Erlang-distributed_random_variates
+    def erlang(self, lam=1, k=1, n=1):
+        """
+        Generate Erlang Random Variates
+        :param lam: lambda or rate
+        :param k: shape parameter
+        :param n: number of random variates
+        :return: a list of random erlang
+        """
+        erl = np.zeros(n)
+        for _ in range(k):
+            erl += np.log(np.array(self.uniform(n=n)))  # try to redo this as a product then take the log at the end.
+        erl = (-1 / lam) * erl
+        return list(erl)
