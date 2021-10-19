@@ -162,4 +162,4 @@ class RandomVariates:
         for _ in range(k):
             erl += np.log(np.array(self.uniform(n=n)))  # try to redo this as a product then take the log at the end.
         erl = (-1 / lam) * erl
-        return list(erl)
+        return erl
