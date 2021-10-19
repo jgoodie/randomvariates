@@ -124,17 +124,6 @@ class RandomVariates:
         :param n: number of random normals to generate
         :return: a list of random normals
         """
-        # u1 = self.uniform(n=n)
-        # if self.seed is not None:
-        #     self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
-        # u2 = self.uniform(n=n)
-        # theta = [2 * np.pi * u for u in u2]
-        # r = [np.sqrt(-2 * np.log(u)) for u in u1]
-        # # x1 = [xi[0] * np.cos(xi[1]) for xi in zip(r, theta)]
-        # # x2 = [xi[0] * np.sin(xi[1]) for xi in zip(r, theta)]
-        # x = [xi[0] * np.cos(xi[1]) for xi in zip(r, theta)]
-        # z = [mu + (xj * sd) for xj in x]
-        # return z
         u1 = self.uniform(n=n)
         if self.seed is not None:
             self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
@@ -153,10 +142,12 @@ class RandomVariates:
         :return: a list of random exponentials
         """
         if lam == 0 or lam == 0.0:
-            return [0.0]*n
+            #return [0.0]*n
+            return np.zeros(n)
         u1 = self.uniform(n=n)
         # exp = [-1 * (1 / lam) * np.log(u) for u in u1]
-        exp = [-1 * (1 / lam) * np.log(1-u) for u in u1]
+        # exp = [-1 * (1 / lam) * np.log(1-u) for u in u1]
+        exp = (-1 / lam) * np.log(1 - u1)
         return exp
 
     def erlang(self, lam=1, k=1, n=1):
