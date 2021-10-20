@@ -13,6 +13,7 @@ class RandomVariates:
     """
     Class method to generate random variates
     """
+
     def __init__(self):
         self.seed = None
         self.prn = 0
@@ -97,7 +98,7 @@ class RandomVariates:
             self.seed0 = self.randseed()
             seed = (self.m + self.seed0) % self.m31
         else:
-            seed = ((self.m + self.seed0 + self.seed) % self.m31)**np.pi
+            seed = ((self.m + self.seed0 + self.seed) % self.m31) ** np.pi
         return seed
 
     def uniform(self, n=1, a=0, b=1):
@@ -126,7 +127,7 @@ class RandomVariates:
         """
         u1 = self.uniform(n=n)
         if self.seed is not None:
-            self.seed += 2**34 - 1  # Hack to make sure U1 and U2 look independent
+            self.seed += 2 ** 34 - 1  # Hack to make sure U1 and U2 look independent
         u2 = self.uniform(n=n)
         theta = 2 * np.pi * u2
         r = np.sqrt(-2 * np.log(u1))
@@ -169,7 +170,28 @@ class RandomVariates:
         :param n: number of random variates to generate
         :return: a numpy array of random weibull variates
         """
-        return (1/lam)*(-1*np.log((1-self.uniform(n=n))))**(1/beta)
+        return (1 / lam) * (-1 * np.log((1 - self.uniform(n=n)))) ** (1 / beta)
 
-    def triangular(self):
+    def triangular(self, a=0, b=1, c=2, n=1):
+        """
+        Generate Triangular Random Variates
+        :param a: lower limit of the triangle
+        :param b: mode or peak of the triangle
+        :param c: upper limit of the triangle
+        :param n: number of triangle random variates
+        :return: a numpy array of random triangle variates
+        """
+        f_c = (b - a) / (c - a)
+        u = self.uniform(n=n)
+        x_tris = []
+        for ui in u:
+            if ui <= f_c:
+                xi = a + np.sqrt(ui * ((b - a) * (c - a)))
+                x_tris.append(xi)
+            else:
+                xi = c - np.sqrt((1.0 - ui) * ((c - b) * (c - a)))
+                x_tris.append(xi)
+        return np.array(x_tris)
+
+    def gamma(self):
         pass
