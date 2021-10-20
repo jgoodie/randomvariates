@@ -14,7 +14,7 @@ class RandomVariates:
     Class method to generate random variates
     """
     def __init__(self):
-        self.seed = None  # Previously set to 0, now set to None
+        self.seed = None
         self.prn = 0
         self.seed0 = 2 ** 23 - 1
         self.m = 16807
@@ -95,9 +95,9 @@ class RandomVariates:
         """
         if self.seed is None:
             self.seed0 = self.randseed()
-            seed = (self.m + self.seed0) % self.m31  # reversed m and m31, self.m * self.seed0
+            seed = (self.m + self.seed0) % self.m31
         else:
-            seed = ((self.m + self.seed0 + self.seed) % self.m31)**np.pi  # reversed m and m31, self.m * self.seed0
+            seed = ((self.m + self.seed0 + self.seed) % self.m31)**np.pi
         return seed
 
     def uniform(self, n=1, a=0, b=1):
@@ -106,7 +106,7 @@ class RandomVariates:
         :param n: number of uniform RVs to generate
         :param a: starting point of uniform range
         :param b: ending point of uniform range
-        :return: an array of uniform RVs
+        :return: a numpy array of uniform RVs
         """
         unifs = [self.generateseed()]  # type: list[int]
         for i in range(1, n + 1):
@@ -122,7 +122,7 @@ class RandomVariates:
         :param mu: mean
         :param sd: standard deviation
         :param n: number of random normals to generate
-        :return: a list of random normals
+        :return: a numpy array of random normals
         """
         u1 = self.uniform(n=n)
         if self.seed is not None:
@@ -139,14 +139,11 @@ class RandomVariates:
         Generate Exponential Random Variates
         :param lam: lamba or rate
         :param n: the number of random variates to generate
-        :return: a list of random exponentials
+        :return: a numpy array of random exponentials
         """
         if lam == 0 or lam == 0.0:
-            #return [0.0]*n
-            return np.zeros(n)
+            return np.zeros(n)  # zeros for summation
         u1 = self.uniform(n=n)
-        # exp = [-1 * (1 / lam) * np.log(u) for u in u1]
-        # exp = [-1 * (1 / lam) * np.log(1-u) for u in u1]
         exp = (-1 / lam) * np.log(1 - u1)
         return exp
 
@@ -156,10 +153,23 @@ class RandomVariates:
         :param lam: lambda or rate
         :param k: shape parameter
         :param n: number of random variates
-        :return: a list of random erlang
+        :return: a numpy array of random erlang
         """
-        erl = np.zeros(n)
+        erl = np.ones(n)  # ones for product
         for _ in range(k):
-            erl += np.log(np.array(self.uniform(n=n)))  # try to redo this as a product then take the log at the end.
-        erl = (-1 / lam) * erl
+            erl *= self.uniform(n=n)
+        erl = (-1 / lam) * np.log(erl)
         return erl
+
+    def weibull(self, lam=1, beta=1, n=1):
+        """
+        Generate Weibull Random Variates
+        :param lam: lambda aka the scale
+        :param beta: beta aka the shape
+        :param n: number of random variates to generate
+        :return: a numpy array of random weibull variates
+        """
+        return (1/lam)*(-1*np.log((1-self.uniform(n=n))))**(1/beta)
+
+    def triangular(self):
+        pass

@@ -10,7 +10,7 @@ from RV import RandomVariates
 
 def main():
     """
-    Main
+    Main: A driver/test script for the RV module.
     """
     rv = RandomVariates()
     print(rv.uniform(n=5))
