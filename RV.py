@@ -101,7 +101,7 @@ class RandomVariates:
             seed = ((self.m + self.seed0 + self.seed) % self.m31) ** np.pi
         return seed
 
-    def uniform(self, n=1, a=0, b=1):
+    def uniform(self, a=0, b=1, n=1):
         """
         Generate uniform random variates
         :param n: number of uniform RVs to generate
@@ -192,6 +192,58 @@ class RandomVariates:
                 xi = c - np.sqrt((1.0 - ui) * ((c - b) * (c - a)))
                 x_tris.append(xi)
         return np.array(x_tris)
+
+    def bernoulli(self, p=0.5, n=1):
+        """
+        Generate Bernoulli(p) random variates
+        :param p: probability of success
+        :param n: number of "coin" tosses
+        :return: a numpy array of random "coin" tosses
+        """
+        u = self.uniform(n=n)
+        bp = []
+        for ui in u:
+            if ui <= 1 - p:
+                bp.append(0)
+            else:
+                bp.append(1)
+        return np.array(bp)
+
+    def binomial(self, t=1, p=0.5, n=1):
+        """
+        Draw samples from a binomial distribution
+        :param t: number of bernoulli(p) trials
+        :param p: probability of success
+        :param n: number of binomial variates to generate
+        :return: a numpy array of samples from the parameterized binomial distribution, where each sample is equal to
+        the number of successes over the n trials.
+        :note: this is clearly not as fast as numpy
+        """
+        bins = []
+        while len(bins) < n:
+            v = 0
+            for _ in range(t):
+                bp = self.bernoulli(p=p)
+                if p <= bp:
+                    v += 1
+                else:
+                    v += 0
+            bins.append(v)
+        return np.array(bins)
+
+    def dicetoss(self, sides=6, n=1):
+        """
+        Simple dice toss of die with x-side count of "sides" (i.e. 6, 10, 20, etc)
+        :param sides: number of sides on the die
+        :param n: number of dice tosses
+        :return: a numpy array of x-sided dice tosses
+        """
+        u = self.uniform(n=n)
+        return np.ceil(sides*u)
+
+    def geometric(self, p=0.5, n=1):
+        u = self.uniform(n=n)
+        return np.ceil(np.log(1-u)/np.log(1-p))
 
     def gamma(self):
         pass
