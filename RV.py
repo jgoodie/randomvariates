@@ -242,8 +242,61 @@ class RandomVariates:
         return np.ceil(sides*u)
 
     def geometric(self, p=0.5, n=1):
+        """
+        Generate geometric random variates
+        :param p: probability of success
+        :param n: number of geometric random variates to generate
+        :return: a numpy array of geometric random variates
+        """
         u = self.uniform(n=n)
         return np.ceil(np.log(1-u)/np.log(1-p))
+
+    def negbin(self, t=1, p=0.5, n=1):
+        """
+        Generate negative binomial random variates
+        :param t: number of trials
+        :param n: number of random variates to generate
+        :param p: probability of success
+        :return: a numpy array of random negative binomials
+        :note: this is painfully slow for large n
+        """
+        negbins = []
+        while len(negbins) < n:
+            v = 0
+            for _ in range(t):
+                v += self.geometric(p=p)[0]
+            negbins.append(v)
+        return np.array(negbins)
+
+    def chisq(self, df=1, n=1):
+        """
+        Generate Chi square random variates with df degrees of freedom
+        :param df: degrees of freedom
+        :param n: number of random variates to produce
+        :return: a numpy array of chi square random variates
+        """
+        chi = np.zeros(n)
+        for _ in range(df):
+            chi += self.norm(n=n) ** 2
+        return chi
+
+    def poisson(self, lam=1, n=1):
+        """
+        Generate Poisson random variates
+        :param lam: lambda or rate
+        :param n: number of random poissons to generate
+        :return: a numpy array of random poissons
+        """
+        p = []
+        for _ in range(n):
+            t = 0  # initialize sum of exponential variables as zero
+            n = -1  # initialize counting variable as negative one
+            while t < 1:
+                e = self.exponential(lam=lam)[0]
+                t += e
+                n += 1
+            p.append(n)
+        return np.array(p)
 
     def gamma(self):
         pass
