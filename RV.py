@@ -298,5 +298,26 @@ class RandomVariates:
             p.append(n)
         return np.array(p)
 
-    def gamma(self):
-        pass
+    def gamma(self, k=1.0, theta=1, n=1):
+        """
+        Instead of implementing the acceptance-rejection algorithms for generating gamma variates described by
+        Law (2015), this is an implementation of Marsaglia and Tsang's transformation-rejection method of using one
+        normal variate and one uniform variate as demonstrated in their 2000 paper:
+        https://dl.acm.org/doi/10.1145/358407.358414
+        :param k: shape parameter
+        :param theta: scale parameter
+        :param n: number of random gammas to generate
+        :return:
+        """
+        assert k >= 1.0, "k should be at least 1.0"
+        assert theta >= 1.0, "theta should be at least 1.0"
+        d = k - 1 / 3
+        c = 1 / np.sqrt(9 * d)
+        gammas = []
+        for _ in range(n):
+            x = self.norm()[0]
+            u = self.uniform()[0]
+            v = (1 + c * x) ** 3
+            if (x > -1 / c) and (np.log(u) < (0.5 * (x ** 2) + d - d * v + d * np.log(v))):
+                gammas.append(d * v)
+        return theta * np.array(gammas)
