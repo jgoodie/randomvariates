@@ -22,20 +22,6 @@ class RandomVariates:
         self.m31 = (2 ** 31 - 1)
 
     @staticmethod
-    def nchoosek(n, k):
-        """
-        n choose k
-        :param n:
-        :param k:
-        :return:
-        """
-        n_fact = np.math.factorial(n)
-        k_fact = np.math.factorial(k)
-        nk_fact = np.math.factorial(n - k)
-        res = n_fact / (k_fact * nk_fact)
-        return res
-
-    @staticmethod
     def reverse(n=0):
         """
         reverses an integer
@@ -96,6 +82,11 @@ class RandomVariates:
         return np.array(b[diff:])
 
     def tausunif(self, n=1):
+        """
+        Generate uniform PRNs based off the Tausworthe PRN
+        :param n: number of uniform PRNs to generate
+        :return: a numpy array of uniform PRNs
+        """
         m = 100
         x = self.taus(n=n * m)
         x = [str(i) for i in x]
