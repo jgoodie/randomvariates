@@ -307,17 +307,49 @@ class RandomVariates:
         :param k: shape parameter
         :param theta: scale parameter
         :param n: number of random gammas to generate
-        :return:
+        :return: a numpy array of gamma random variates
         """
         assert k >= 1.0, "k should be at least 1.0"
         assert theta >= 1.0, "theta should be at least 1.0"
         d = k - 1 / 3
         c = 1 / np.sqrt(9 * d)
         gammas = []
-        for _ in range(n):
+        # for _ in range(n):
+        while len(gammas) <= n:
             x = self.norm()[0]
             u = self.uniform()[0]
             v = (1 + c * x) ** 3
             if (x > -1 / c) and (np.log(u) < (0.5 * (x ** 2) + d - d * v + d * np.log(v))):
                 gammas.append(d * v)
         return theta * np.array(gammas)
+
+    def lognormal(self, mu=0, sd=1, n=1):
+        """
+        Lognormal Random Variates. The lognormal distribution occasionally referred to as the
+        Galton distribution or Galton's distribution, after Francis Galton.
+        :param mu: mean
+        :param sd: standard deviation
+        :param n: number of lognormals to generate
+        :return: a numpy array of lognormal random variates
+        """
+        # 1) Generate Y ~ Nor(u, var)
+        # 2) Return X = np.e**Y
+        y = self.norm(mu=mu, sd=sd, n=n)
+        return np.e**y
+
+    def beta(self, a=1, b=1, n=1):
+        """
+        Generate beta random variates
+        :param a: shape parameter a
+        :param b: shape parameter b
+        :param n: number of beta random variates to generate
+        :return: a numpy array of beta random variates
+        """
+        # 1) Generate Y1 ~ gamma(a, 1) and Y2 ~ gamma(a, 1)
+        # 2) Return X = Y1/(Y1+Y2)
+        assert a >= 1.0, "a should be at least 1.0"
+        assert b >= 1.0, "b should be at least 1.0"
+        y1 = self.gamma(k=a, theta=1, n=n)
+        y2 = self.gamma(k=b, theta=1, n=n)
+        x = y1 / (y1 + y2)
+        return np.array(x)
