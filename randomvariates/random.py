@@ -76,6 +76,33 @@ class RandomVariates:
         self.prn = self.squaresrng(i, r) % 100000000000
         return self.prn
 
+    def taus(self, n=100):
+        """
+        Basic Tausworthe Random Number Generator
+        :param n: number of random binary values to return
+        :return:
+        """
+        rseed = self.randseed()
+        bstring = format(rseed, 'b')
+        b = [int(x) for x in bstring]
+        blen = len(b)
+        r = int(np.round(blen * 0.25))
+        q = int(np.round(blen * 0.75))
+        for _ in range(n):
+            bi = b[blen - r] ^ b[blen - q]
+            b.append(bi)
+            blen = len(b)
+        diff = len(b) - n
+        return np.array(b[diff:])
+
+    def tausunif(self, n=1):
+        m = 100
+        x = self.taus(n=n * m)
+        x = [str(i) for i in x]
+        it = [iter(x)] * m
+        obs = np.array([int(''.join(s), 2) / (2 ** m) for s in zip(*it)])
+        return np.array(obs)
+
     def set_seed(self, seed):
         """
         Set the seed
