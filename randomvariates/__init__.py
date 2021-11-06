@@ -1,5 +1,5 @@
-from . import RV
+from . import random
 
 __all__ = [
-    'RV',
+    'random.py',
 ]

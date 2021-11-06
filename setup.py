@@ -8,7 +8,7 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='randvars',
-    version='0.0.1',
+    version='0.0.2',
     description='A library of random variate generation routines',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
