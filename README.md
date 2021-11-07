@@ -46,8 +46,10 @@ Default geometric(p=0.5)
 Default negbin(t=1, p=0.5)
 * chisq() Generate Chi-squared random variates Default chisq(df=1)
 * poisson() Method to generate Poisson random variates Default poisson(lam=1)
-* gamma() Gamma random variates shape parameter k and a scale parameter θ
-Default gamma(k=1.0, theta=1)
+* gamma() Gamma random variates shape parameter k and a scale parameter θ. 
+Implementation is based on Marsaglia and Tsang's transformation-rejection method
+of generating gamma random variates 
+(https://dl.acm.org/doi/10.1145/358407.358414) Default gamma(k=1.0, theta=1)
 * lognormal() Generate lognormal random variates Default lognormal(mu=0, sd=1)
 * beta() Routine to generate beta random variates Default beta(a=1, b=1)
 
