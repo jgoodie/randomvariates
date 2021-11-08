@@ -237,17 +237,17 @@ class RandomVariates:
         the number of successes over the n trials.
         :note: this is clearly not as fast as numpy
         """
-        bins = []
-        while len(bins) < n:
-            v = 0
-            for _ in range(t):
-                bp = self.bernoulli(p=p)
-                if p <= bp:
-                    v += 1
-                else:
-                    v += 0
-            bins.append(v)
-        return np.array(bins)
+        binomials = []
+        count = 0
+        for i in range(n):
+            if self.seed:
+                self.seed += i
+                count += i
+            bernsum = np.sum(self.bernoulli(p=p, n=t))
+            binomials.append(bernsum)
+        if self.seed:
+            self.seed -= count
+        return np.array(binomials)
 
     def dicetoss(self, sides=6, n=1):
         """
