@@ -1,10 +1,14 @@
 # Release History
 
+2021-11-08: Refactored norm to properly hand seed==0
+
+2021-11-08: Refactored chisq method to work around "funky" seeding issues
+
 2021-11-08: Refactored the negbin method to properly handle the situation when a
-seed it set.
+seed is set.
 
 2021-11-08: Refactored the binomial method to properly handle the situation when a
-seed it set.
+seed is set.
 
 2021-11-06: Initial creation of pip package
 

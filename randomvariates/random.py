@@ -143,14 +143,16 @@ class RandomVariates:
         :param n: number of random normals to generate
         :return: a numpy array of random normals
         """
+        seed = self.seed  # grab init seed
         u1 = self.uniform(n=n)
-        if self.seed is not None:
+        if self.seed or self.seed == 0:  # is not None:
             self.seed += 2 ** 34 - 1  # Hack to make sure U1 and U2 look independent
         u2 = self.uniform(n=n)
         theta = 2 * np.pi * u2
         r = np.sqrt(-2 * np.log(u1))
         x = r * np.cos(theta)
         z = mu + (x * sd)
+        self.seed = seed  # reset init seed
         return z
 
     def exponential(self, lam=1, n=1):
@@ -297,9 +299,15 @@ class RandomVariates:
         :param n: number of random variates to produce
         :return: a numpy array of chi square random variates
         """
+        if self.seed:
+            seed = self.seed
         chi = np.zeros(n)
-        for _ in range(df):
+        for i in range(df):
             chi += self.norm(n=n) ** 2
+            if self.seed:
+                self.seed = seed + i
+        if self.seed:
+            self.seed = seed
         return chi
 
     def poisson(self, lam=1, n=1):
