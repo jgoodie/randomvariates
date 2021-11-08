@@ -300,6 +300,46 @@ By default, the binomial() function generates 1 trial at p=0.5:
 > 
 > array([0])
 
+Note: Don't confuse t=trials and n=number of values to generate. To generate 25 
+binomials with 10 trials, and probability 0.5, we would specify 
+binomial(t=10, p=0.5, n=25): 
 
+> rv.binomial(t=10, p=0.5, n=25)
+> 
+> array([6, 5, 3, 3, 5, 3, 5, 7, 6, 5, 3, 5, 4, 5, 4, 4, 2, 6, 6, 6, 4, 4,
+       6, 5, 2])
 
+**Random X-sided Dice Toss**
+
+For the D&D fans, the dicetoss() function allows you to generate an X-sided
+die toss. For example, to generate 10, 20-sided dice tosses, simply call the 
+dicetoss() function. By default, dicetoss() defaults to a 6-sided die:
+
+> rv.dicetoss(n=10)
+> 
+> array([6., 6., 5., 1., 6., 3., 1., 5., 3., 5.])
+
+To generate 10, 20-sided dice toss, set the side variable to 20:
+
+>rv.dicetoss(sides=20, n=10)
+> 
+> 
+> array([20., 20., 17.,  4., 20., 10.,  3., 15., 10., 14.])
+
+**Geometric Random Variates**
+
+To generate geometric random values, use the geometric() function. By default, 
+the geometric function is set to a probability of 0.5:
+
+> rv.geometric()
+> 
+> array([5.])
+
+To generate geometric values with a different probability, set p equal to the new 
+probability:
+
+> rv.geometric(p=0.42, n=25)
+> 
+> array([ 7., 12.,  4.,  1.,  6.,  2.,  1.,  3.,  2.,  3.,  1.,  1.,  2.,
+        1.,  2.,  7.,  3.,  1.,  4.,  2.,  1.,  2.,  2.,  4.,  1.])
 
