@@ -368,3 +368,26 @@ By default, chisq() generates values with df=1:
 > 
 > array([0.02609475])
 
+To generated chi-squared values with different degrees of freedom, set df=X where 
+X is the degrees of freedom:
+
+> rv.chisq(df=3, n=25)
+> 
+> array([4.03013192, 2.1255032 , 1.41496674, 2.49301795, 4.34632967,
+       7.07483573, 8.80603908, 0.40890643, 1.02559277, 0.3263966 ,
+       1.16851057, 9.41171507, 0.10331964, 0.4620984 , 1.30332824,
+       2.86123596, 6.30155659, 2.34574672, 6.51270442, 1.8040176 ,
+       2.73061465, 2.18939106, 0.17322089, 1.95769521, 1.34417982])
+
+**Poisson Random Variates**
+
+By default, the poisson() method will generate poission random values with lam=1:
+
+> rv.poisson()
+> 
+> array([18])
+
+To generate possion values for different lambda values, set lam=X, where X is the 
+new labmda value:
+
+

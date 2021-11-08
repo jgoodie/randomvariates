@@ -1,5 +1,9 @@
 # Release History
 
+2021-11-08: Refactored poisson to correctly handle the situation with a seed is set
+
+2021-11-08: Found a bug in the seed algorithm
+
 2021-11-08: Refactored norm to properly hand seed==0
 
 2021-11-08: Refactored chisq method to work around "funky" seeding issues

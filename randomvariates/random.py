@@ -301,6 +301,7 @@ class RandomVariates:
         :param n: number of random variates to produce
         :return: a numpy array of chi square random variates
         """
+        seed = 0
         if self.seed:
             seed = self.seed
         chi = np.zeros(n)
@@ -320,6 +321,8 @@ class RandomVariates:
         :return: a numpy array of random poissons
         """
         p = []
+        count = 0
+        seed = self.seed
         for _ in range(n):
             t = 0  # initialize sum of exponential variables as zero
             n = -1  # initialize counting variable as negative one
@@ -327,7 +330,11 @@ class RandomVariates:
                 e = self.exponential(lam=lam)[0]
                 t += e
                 n += 1
+                count += 1
+                if self.seed:
+                    self.seed += 1
             p.append(n)
+        self.seed = seed
         return np.array(p)
 
     def gamma(self, k=1.0, theta=1, n=1):
