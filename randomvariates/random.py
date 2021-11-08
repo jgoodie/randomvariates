@@ -116,7 +116,9 @@ class RandomVariates:
             self.seed0 = self.randseed()
             seed = (self.m + self.seed0) % self.m31
         else:
-            seed = ((self.m + self.seed0 + self.seed) % self.m31) ** np.pi
+            # This is a bug self.seed0 doesn't get unset. Get rid of it from this calculation
+            # seed = ((self.m + self.seed0 + self.seed) % self.m31) ** np.pi
+            seed = ((self.m + self.seed) % self.m31) ** np.pi
         return seed
 
     def uniform(self, a=0, b=1, n=1):
