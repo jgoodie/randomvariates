@@ -393,7 +393,11 @@ class RandomVariates:
         # 2) Return X = Y1/(Y1+Y2)
         assert a >= 1.0, "a should be at least 1.0"
         assert b >= 1.0, "b should be at least 1.0"
+        seed = self.seed
         y1 = self.gamma(k=a, theta=1, n=n)
+        if self.seed:
+            self.seed += 2 ** 17 - 1
         y2 = self.gamma(k=b, theta=1, n=n)
         x = y1 / (y1 + y2)
+        self.seed = seed
         return np.array(x)
