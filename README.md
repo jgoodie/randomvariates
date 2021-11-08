@@ -15,7 +15,6 @@ PRN generator
 * squaresrng(): Widynski's "Squares: A Fast Counter-Based RNG" 
 https://arxiv.org/pdf/2004.06278.pdf 
 
-
 ### Various helper functions to take advantage of the PRN generators
 * randseed(): Helper function to grab a "smaller" PRN from the Widynski squares PRN 
 generator
@@ -59,6 +58,8 @@ in python. Numpy's routines are written in C hence are much, much faster.
 * Beta and Gamma distributions only accept a, b, k and theta greater than one. 
 Other random variate implementations, such as Numpy can handle values between
 0 and 1.
+* Setting the seed does not affect the Tausworthe and Tausworthe Uniform PRN 
+generators
 
 ### Distributions not currently implemented
 * Pearson Type V
@@ -66,5 +67,107 @@ Other random variate implementations, such as Numpy can handle values between
 * Log-Logistic
 * Johnson Bounded and Johnson unbounded
 * Bézier
+
+## Installation
+### Requirements:
+* Python 3.x
+* pip (https://pip.pypa.io/en/stable/installation/)
+
+To install the library, simply run the command:
+* pip install randvars
+
+## Usage
+To use the library, you need to import the library into your python script then 
+create an instance of random variates:
+> import randomvariates
+
+> rv = randomvariates.random.RandomVariates()
+
+Alternately you can import random from randomvariates:
+> from randomvariates import random
+
+> rv = random.RandomVariates()
+
+### Seeds
+By default, a seed is not set when an instance or randomvariates is called.
+When a seed is set to None, randomvariates will randomly generate values for the
+various random variate routines. For repeatability, we can set a seed by calling 
+the set_seed() method. Once a seed has been set, we can verify by calling the 
+get_seed() method.
+
+> from randomvariates import random
+>
+> rv = random.RandomVariates()
+> 
+> rv.set_seed(42)
+>
+> rv.get_seed()
+> 
+> 42
+
+### Pseudo Random Number Generators
+To call the Widynski Squares PRN we can call the squaresrng() method. 
+The squaresrng() method takes a center and key value. By default, the center
+and key are set to 1: squaresrng(ctr=1, key=1)
+> rv.squaresrng(42,21)
+> 
+> 22904061750312427071608663841693658494663185320788517623007713567980053732104718807902410691731255108163475339984462249791973853173096390867949739437289512015166556428304384
+
+As of 11-06-2021, the Tausworthe PRN  and Tausworthe Uniform PRN generator does 
+not take a seed value (See Limitations above)
+To call the Tausworthe generators, simply call rv.taus() and rv.tausunif(). 
+By default taus() will generate 100 binary PRNs and rv.tausunif() will generate 
+a single uniform(0,1):
+
+>rv.taus(n=100)
+> 
+> array([0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+       1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+       0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+       0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+       0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0])
+
+> rv.tausunif(n=1)
+> 
+>array([0.22627192])
+
+**Linear Congruential Generator (LCG)**
+
+The Uniform PRN generator is based off a "desert island" LCG of the form:
+
+> X_{i} = 16807 X_{i-1} mod(2**32 - 1)
+
+To call the uniform PRN generator simply call:
+> rv.uniform()
+> 
+> array([0.0028378])
+
+To generate more the one unif(0,1), call the method with n=X where X is the number 
+of unif(0,1)s to generate:
+
+> rv.uniform(n=25)
+> 
+> array([0.0028378 , 0.69495865, 0.17008364, 0.59578035, 0.28035944,
+       0.00113405, 0.05993272, 0.28927888, 0.91019703, 0.68147951,
+       0.62609725, 0.81650574, 0.01200872, 0.83049583, 0.14336138,
+       0.4747437 , 0.01741077, 0.62288295, 0.79372406, 0.12022883,
+       0.68598241, 0.3064384 , 0.31021374, 0.76239295, 0.53823463])
+
+If we want to generate something other than unif(0,1), we can call the function
+with a=X and b=Y where X and Y are the lower and upper bounds of the uniform 
+distribution:
+
+> rv.uniform(a=7, b=11, n=25)
+> 
+> array([ 7.01135121,  9.77983461,  7.68033457,  9.3831214 ,  8.12143777,
+        7.00453619,  7.23973089,  8.15711553, 10.64078812,  9.72591803,
+        9.50438901, 10.26602297,  7.04803487, 10.32198331,  7.57344553,
+        8.89897481,  7.0696431 ,  9.4915318 , 10.17489623,  7.48091533,
+        9.74392966,  8.22575361,  8.24085498, 10.04957178,  9.15293853])
+
+### Distributions
+**Normal Random Variates**
+
+
 
 

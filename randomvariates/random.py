@@ -34,7 +34,7 @@ class RandomVariates:
         return rev
 
     @staticmethod
-    def squaresrng(ctr, key):
+    def squaresrng(ctr=1, key=1):
         """
         B. Widynski
         https://arxiv.org/pdf/2004.06278.pdf
