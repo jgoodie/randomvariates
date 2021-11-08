@@ -387,7 +387,13 @@ By default, the poisson() method will generate poission random values with lam=1
 > 
 > array([18])
 
-To generate possion values for different lambda values, set lam=X, where X is the 
-new labmda value:
+To generate possion random variates for different lambda values, set lam=X, 
+where X is the new labmda value:
 
+> rv.poisson(lam=3, n=25)
+> 
+> array([4, 7, 3, 2, 3, 3, 0, 3, 5, 1, 3, 2, 9, 3, 1, 3, 2, 3, 4, 5, 2, 4,
+       5, 7, 2])
+
+**Gamma Random Variates**
 

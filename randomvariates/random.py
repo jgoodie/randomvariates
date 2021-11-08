@@ -350,16 +350,21 @@ class RandomVariates:
         """
         assert k >= 1.0, "k should be at least 1.0"
         assert theta >= 1.0, "theta should be at least 1.0"
+        seed = self.seed
         d = k - 1 / 3
         c = 1 / np.sqrt(9 * d)
         gammas = []
-        # for _ in range(n):
-        while len(gammas) <= n:
+        count = 0
+        while len(gammas) < n:
+            if self.seed:
+                self.seed += count
             x = self.norm()[0]
             u = self.uniform()[0]
             v = (1 + c * x) ** 3
             if (x > -1 / c) and (np.log(u) < (0.5 * (x ** 2) + d - d * v + d * np.log(v))):
                 gammas.append(d * v)
+            count += 1
+        self.seed = seed
         return theta * np.array(gammas)
 
     def lognormal(self, mu=0, sd=1, n=1):

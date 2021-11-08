@@ -1,6 +1,8 @@
 # Release History
 
-2021-11-08: Refactored poisson to correctly handle the situation with a seed is set
+2021-11-08: Gamma fixes
+
+2021-11-08: Refactored poisson to correctly handle the situation when a seed is set
 
 2021-11-08: Found a bug in the seed algorithm
 
