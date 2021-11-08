@@ -190,7 +190,26 @@ when calling the function:
        21.33704934, 44.01056639, 85.43369206, 10.93161744, 35.5352881 ,
        47.6567116 , 62.89812129, 35.67247842, 48.76775665, 37.78179072])
 
+**Exponential Random Variates**
 
+By default, the exponential() functin will generate a single, lambda=1 random variate.
+
+> rv.exponential()
+> 
+> array([1.11685025])
+
+To generate exponentials with different rates (lambda), call the exponential function
+with lam=X, where X is 1/X rate:
+
+> rv.exponential(lam=42, n=25)
+> 
+> array([0.02659167, 0.05889761, 0.0237974 , 0.05500891, 0.00990581,
+       0.00665694, 0.01027128, 0.00311863, 0.00991187, 0.00155661,
+       0.02532011, 0.00358105, 0.06095103, 0.02608557, 0.03126096,
+       0.01844892, 0.04179501, 0.00204212, 0.01357267, 0.02956585,
+       0.05493093, 0.04847486, 0.03083947, 0.03648715, 0.02353137])
+
+**Erlang Random Variates**
 
 
 
