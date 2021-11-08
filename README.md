@@ -439,4 +439,18 @@ standard deviation:
 Beta random values can be generated via the beta() method. The beta() method takes
 two shape parameters - a and b. By default, the a and b parameters are set to 1:
 
+> rv.beta()
+> 
+> array([0.01995716])
+
+To generate beta values with different shape parameters, specify different shape 
+values as such:
+
+> rv.beta(a = 2, b = 4, n = 25)
+> 
+> array([0.05843224, 0.17390187, 0.50358743, 0.50885326, 0.71498465,
+       0.01966699, 0.53999924, 0.18878303, 0.30052695, 0.66454575,
+       0.47430718, 0.23385242, 0.69526851, 0.48014572, 0.07415403,
+       0.22019374, 0.07180719, 0.17131799, 0.19680721, 0.23783813,
+       0.32510779, 0.29333343, 0.20013351, 0.27709332, 0.51118395])
 
