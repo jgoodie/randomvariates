@@ -142,7 +142,7 @@ To call the uniform PRN generator simply call:
 > 
 > array([0.0028378])
 
-To generate more the one unif(0,1), call the method with n=X where X is the number 
+To generate more than one unif(0,1), call the method with n=X where X is the number 
 of unif(0,1)s to generate:
 
 > rv.uniform(n=25)
@@ -167,6 +167,32 @@ distribution:
 
 ### Distributions
 **Normal Random Variates**
+
+To generate random normal random variates, call the norm() function. By default, 
+the norm() function will generate values with mean = 0 and standard deviation = 1.
+
+> rv.norm(n=25)
+> 
+> array([-1.33438863,  0.12180611,  0.88656523,  0.50965537, -1.64358406,
+       -0.25778164,  0.57095618,  1.90310886, -0.05967737, -0.34183211,
+        1.40942348,  0.588753  , -2.00879407, -0.27557057, -0.05367554,
+        0.36562436,  1.51957859, -0.87597507,  0.27341912,  0.99870143,
+        0.0563413 , -0.58931763,  0.06256761,  1.34552544, -0.41456673])
+
+To generate normals with other means and standard deviations, simply specify them 
+when calling the function:
+
+> rv.norm(mu=42, sd=21, n=25)
+> 
+> array([31.09197496, 90.91916642, 10.96438887, 63.22805106, 11.65331438,
+       42.3934924 , 31.50241102, 57.32494887, 39.63622134, 50.84789244,
+       29.66813461, 71.59768198, 51.23679519, 29.62926174, 38.93133399,
+       21.33704934, 44.01056639, 85.43369206, 10.93161744, 35.5352881 ,
+       47.6567116 , 62.89812129, 35.67247842, 48.76775665, 37.78179072])
+
+
+
+
 
 
 
