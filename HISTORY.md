@@ -1,5 +1,8 @@
 # Release History
 
+2021-11-08: Refactored the negbin method to properly handle the situation when a
+seed it set.
+
 2021-11-08: Refactored the binomial method to properly handle the situation when a
 seed it set.
 

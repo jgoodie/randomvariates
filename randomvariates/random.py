@@ -279,11 +279,15 @@ class RandomVariates:
         :note: this is painfully slow for large n
         """
         negbins = []
-        while len(negbins) < n:
-            v = 0
-            for _ in range(t):
-                v += self.geometric(p=p)[0]
-            negbins.append(v)
+        count = 0
+        for i in range(n):
+            if self.seed:
+                self.seed += i
+                count += i
+            nbt = np.sum(self.geometric(p=p, n=t))
+            negbins.append(nbt)
+        if self.seed:
+            self.seed -= count
         return np.array(negbins)
 
     def chisq(self, df=1, n=1):

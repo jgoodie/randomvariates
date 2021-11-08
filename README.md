@@ -343,3 +343,5 @@ probability:
 > array([ 7., 12.,  4.,  1.,  6.,  2.,  1.,  3.,  2.,  3.,  1.,  1.,  2.,
         1.,  2.,  7.,  3.,  1.,  4.,  2.,  1.,  2.,  2.,  4.,  1.])
 
+**Negative Binomial Random Variates**
+
