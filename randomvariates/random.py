@@ -20,6 +20,7 @@ class RandomVariates:
         self.seed0 = 2 ** 23 - 1
         self.m = 16807
         self.m31 = (2 ** 31 - 1)
+        self.__version__ = "0.0.17"
 
     @staticmethod
     def reverse(n=0):
@@ -182,7 +183,7 @@ class RandomVariates:
         erl = np.ones(n)  # ones for product
         for i in range(k):
             erl *= self.uniform(n=n)
-            if self.seed:
+            if self.seed or self.seed == 0:
                 self.seed += 1
         erl = (-1 / lam) * np.log(erl)
         self.seed = seed
@@ -253,7 +254,7 @@ class RandomVariates:
                 count += i
             bernsum = np.sum(self.bernoulli(p=p, n=t))
             binomials.append(bernsum)
-        if self.seed:
+        if self.seed or self.seed == 0:
             self.seed -= count
         return np.array(binomials)
 
@@ -288,14 +289,13 @@ class RandomVariates:
         """
         negbins = []
         count = 0
+        seed = self.seed
         for i in range(n):
-            if self.seed:
+            if self.seed or self.seed == 0:
                 self.seed += i
-                count += i
             nbt = np.sum(self.geometric(p=p, n=t))
             negbins.append(nbt)
-        if self.seed:
-            self.seed -= count
+        self.seed = seed
         return np.array(negbins)
 
     def chisq(self, df=1, n=1):
@@ -305,16 +305,13 @@ class RandomVariates:
         :param n: number of random variates to produce
         :return: a numpy array of chi square random variates
         """
-        seed = 0
-        if self.seed:
-            seed = self.seed
+        seed = self.seed
         chi = np.zeros(n)
         for i in range(df):
             chi += self.norm(n=n) ** 2
-            if self.seed:
+            if self.seed or self.seed == 0:
                 self.seed = seed + i
-        if self.seed:
-            self.seed = seed
+        self.seed = seed
         return chi
 
     def poisson(self, lam=1, n=1):
@@ -335,7 +332,7 @@ class RandomVariates:
                 t += e
                 n += 1
                 count += 1
-                if self.seed:
+                if self.seed or self.seed == 0:
                     self.seed += 1
             p.append(n)
         self.seed = seed
@@ -360,7 +357,7 @@ class RandomVariates:
         gammas = []
         count = 0
         while len(gammas) < n:
-            if self.seed:
+            if self.seed or self.seed == 0:
                 self.seed += count
             x = self.norm()[0]
             u = self.uniform()[0]

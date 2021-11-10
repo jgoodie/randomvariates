@@ -1,5 +1,7 @@
 # Release History
 
+2021-11-10: More stupid seed fixes
+
 2021-11-10: Erlang fixes
 
 2021-11-08: Beta fixes
