@@ -178,10 +178,14 @@ class RandomVariates:
         :param n: number of random variates
         :return: a numpy array of random erlang
         """
+        seed = self.seed
         erl = np.ones(n)  # ones for product
-        for _ in range(k):
+        for i in range(k):
             erl *= self.uniform(n=n)
+            if self.seed:
+                self.seed += 1
         erl = (-1 / lam) * np.log(erl)
+        self.seed = seed
         return erl
 
     def weibull(self, lam=1, beta=1, n=1):

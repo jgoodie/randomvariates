@@ -33,28 +33,28 @@ Default exponential(lam=1)
 Default erlang(lam=1, k=1, n=1)
 * weibull(): Method to generate weibull random variates: Default 
 weibull(lam=1, beta=1)
-* triangular() Generate triangular random variates with a-lower, b-mode 
+* triangular(): Generate triangular random variates with a-lower, b-mode 
 and c-upper Default triangular(a=0, b=1, c=2)
-* Bernoulli(p) random variates Default bernoulli(p=0.5)
-* Routine to generate binomial random variates Default binomial(t=1, p=0.5)
-* dicetoss() Simple/fun method to generate X-sides dice toss. Default is 
+* Bernoulli(): random variates Default bernoulli(p=0.5)
+* Binomial(): Routine to generate binomial random variates Default binomial(t=1, p=0.5)
+* dicetoss(): Simple/fun method to generate X-sides dice toss. Default is 
 a simple 6-sided dicetoss(sides=6)
-* geometric() Method to generate geometric random variates 
+* geometric(): Method to generate geometric random variates 
 Default geometric(p=0.5)
-* negbin() Routine to generate discrete random negative binomials 
+* negbin(): Routine to generate discrete random negative binomials 
 Default negbin(t=1, p=0.5)
-* chisq() Generate Chi-squared random variates Default chisq(df=1)
-* poisson() Method to generate Poisson random variates Default poisson(lam=1)
-* gamma() Gamma random variates shape parameter k and a scale parameter θ. 
+* chisq(): Generate Chi-squared random variates Default chisq(df=1)
+* poisson(): Method to generate Poisson random variates Default poisson(lam=1)
+* gamma(): Gamma random variates shape parameter k and a scale parameter θ. 
 Implementation is based on Marsaglia and Tsang's transformation-rejection method
 of generating gamma random variates 
 (https://dl.acm.org/doi/10.1145/358407.358414) Default gamma(k=1.0, theta=1)
-* lognormal() Generate lognormal random variates Default lognormal(mu=0, sd=1)
-* beta() Routine to generate beta random variates Default beta(a=1, b=1)
+* lognormal(): Generate lognormal random variates Default lognormal(mu=0, sd=1)
+* beta(): Routine to generate beta random variates Default beta(a=1, b=1)
 
 ## Limitations
 * Unlike Numpy's random variate generation routines, these are written
-in python. Numpy's routines are written in C hence are much, much faster.
+in python. Numpy's random routines are written in C hence are much, much faster.
 * Beta and Gamma distributions only accept a, b, k and theta greater than one. 
 Other random variate implementations, such as Numpy can handle values between
 0 and 1.
@@ -192,7 +192,7 @@ when calling the function:
 
 **Exponential Random Variates**
 
-By default, the exponential() functin will generate a single, lambda=1 random variate.
+By default, the exponential() function will generate a single, lambda=1 random variate.
 
 > rv.exponential()
 > 
