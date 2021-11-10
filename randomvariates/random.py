@@ -288,7 +288,6 @@ class RandomVariates:
         :note: this is painfully slow for large n
         """
         negbins = []
-        count = 0
         seed = self.seed
         for i in range(n):
             if self.seed or self.seed == 0:
